@@ -1,4 +1,10 @@
-import { Injectable, ConflictException, BadRequestException, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  ConflictException,
+  BadRequestException,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { NetworkingService } from '../../../../common/networking/networking.service';
 import { RegisterUserDto } from './dto/register-user.dto';
 import { UserResponseDto } from './dto/user-response.dto';
@@ -8,7 +14,10 @@ import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly networkingService: NetworkingService, private jwtService: JwtService) {}
+  constructor(
+    private readonly networkingService: NetworkingService,
+    private jwtService: JwtService,
+  ) {}
 
   async register(registerDto: RegisterUserDto): Promise<UserResponseDto> {
     try {
@@ -27,13 +36,13 @@ export class AuthService {
       const user = await this.networkingService.sendToAuth<UserResponseDto>(
         { cmd: 'validate_user' },
         {
-          email: loginDto.email, 
-          password: loginDto.password
+          email: loginDto.email,
+          password: loginDto.password,
         },
       );
 
-      const payload = { 
-        sub: user.id, 
+      const payload = {
+        sub: user.id,
         email: user.email,
         name: user.name,
       };
@@ -49,13 +58,11 @@ export class AuthService {
     }
   }
 
-
   async getAllUsers(): Promise<UserResponseDto[]> {
     try {
-      const response = await this.networkingService.sendToAuth<UserResponseDto[]>(
-        { cmd: 'get_all_users' },
-        {},
-      );
+      const response = await this.networkingService.sendToAuth<
+        UserResponseDto[]
+      >({ cmd: 'get_all_users' }, {});
       return response;
     } catch (error) {
       this.handleMicroserviceError(error);
@@ -75,7 +82,9 @@ export class AuthService {
           throw new InternalServerErrorException(error.message);
       }
     }
-    
-    throw new InternalServerErrorException('An error occurred while processing your request');
+
+    throw new InternalServerErrorException(
+      'An error occurred while processing your request',
+    );
   }
 }

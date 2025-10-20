@@ -13,7 +13,9 @@ import { UsersModule } from './users/users.module';
     }),
     MongooseModule.forRootAsync({
       useFactory: () => ({
-        uri: process.env.MONGODB_URI || 'mongodb://localhost:27017/nestjs-challenge',
+        uri:
+          process.env.MONGODB_URI ||
+          'mongodb://localhost:27017/nestjs-challenge',
       }),
     }),
     UsersModule,

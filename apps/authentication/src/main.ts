@@ -11,7 +11,7 @@ async function bootstrap() {
       transport: Transport.TCP,
       options: {
         host: process.env.AUTH_TCP_HOST || 'localhost',
-        port: parseInt(process.env.AUTH_TCP_PORT || "3001"),
+        port: parseInt(process.env.AUTH_TCP_PORT || '3001'),
       },
     },
   );
